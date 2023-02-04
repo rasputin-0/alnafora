@@ -1,0 +1,233 @@
+/*
+   -- ALNAFORA --
+*/
+
+//////////////////////////////////////////////
+//        RemoteXY include library          //
+//////////////////////////////////////////////
+
+// RemoteXY select connection mode and include library 
+#define REMOTEXY_MODE__ESP8266_HARDSERIAL_POINT
+
+#include <RemoteXY.h>
+
+// RemoteXY connection settings 
+#define REMOTEXY_SERIAL Serial
+#define REMOTEXY_SERIAL_SPEED 115200
+#define REMOTEXY_WIFI_SSID "RemoteXY"
+#define REMOTEXY_WIFI_PASSWORD "12345678"
+#define REMOTEXY_SERVER_PORT 6377
+
+
+// RemoteXY configurate  
+#pragma pack(push, 1)
+uint8_t RemoteXY_CONF[] =   // 74 bytes
+  { 255,4,0,0,0,67,0,16,23,1,2,0,14,13,34,12,2,26,31,31,
+  49,0,79,70,70,0,2,0,14,30,34,12,2,26,31,31,50,0,79,70,
+  70,0,2,0,14,49,34,12,2,26,31,31,51,0,79,70,70,0,2,0,
+  14,68,34,12,2,26,31,31,52,0,79,70,70,0 };
+  
+// this structure defines all the variables and events of your control interface 
+struct {
+
+    // input variables
+  uint8_t switch_1; // =1 if switch ON and =0 if OFF 
+  uint8_t switch_2; // =1 if switch ON and =0 if OFF 
+  uint8_t switch_3; // =1 if switch ON and =0 if OFF 
+  uint8_t switch_4; // =1 if switch ON and =0 if OFF 
+
+    // other variable
+  uint8_t connect_flag;  // =1 if wire connected, else =0 
+
+} RemoteXY;
+#pragma pack(pop)
+
+/////////////////////////////////////////////
+//           END RemoteXY include          //
+/////////////////////////////////////////////
+//select the bins
+int motor1=9;
+int motor2=8;
+int motor3=7;
+int motor4=6;
+int motor5=5;
+int motor6=4;
+int motor7=3;
+int motor8=2;
+
+#define PIN_SWITCH_1 10
+#define PIN_SWITCH_2 11
+#define PIN_SWITCH_3 12
+#define PIN_SWITCH_4 13
+
+
+
+void setup() 
+{
+  RemoteXY_Init (); 
+  
+  pinMode (PIN_SWITCH_1, OUTPUT);
+  pinMode (PIN_SWITCH_2, OUTPUT);
+  pinMode (PIN_SWITCH_3, OUTPUT);
+  pinMode (PIN_SWITCH_4, OUTPUT);
+ // put your setup code here, to run once:
+  pinMode(motor1,OUTPUT);
+  pinMode(motor2,OUTPUT);
+  pinMode(motor3,OUTPUT);
+  pinMode(motor4,OUTPUT);
+  pinMode(motor5,OUTPUT);
+  pinMode(motor6,OUTPUT);
+  pinMode(motor7,OUTPUT);
+  pinMode(motor8,OUTPUT);
+  // TODO you setup code
+  
+}
+
+void loop() 
+{ 
+  RemoteXY_Handler ();
+  
+  digitalWrite(PIN_SWITCH_1, (RemoteXY.switch_1==0)?LOW:HIGH);
+  digitalWrite(PIN_SWITCH_2, (RemoteXY.switch_2==0)?LOW:HIGH);
+  digitalWrite(PIN_SWITCH_3, (RemoteXY.switch_3==0)?LOW:HIGH);
+  digitalWrite(PIN_SWITCH_4, (RemoteXY.switch_4==0)?LOW:HIGH);
+
+  // if app don't start defulte start
+
+  if (PIN_SWITCH_1 < 1  and PIN_SWITCH_2 < 1 and PIN_SWITCH_3 < 1 and PIN_SWITCH_3 < 1){
+    normalOpen(); 
+  }
+  // if switch_1 is selected 
+  
+  if (PIN_SWITCH_1 > 1  and PIN_SWITCH_2 < 1 and PIN_SWITCH_3 < 1 and PIN_SWITCH_3 < 1){
+    fristShape();
+  }
+  
+  // if switch_2 is selected 
+  
+  if (PIN_SWITCH_1 < 1  and PIN_SWITCH_2 > 1 and PIN_SWITCH_3 < 1 and PIN_SWITCH_3 < 1){
+    secondeShape();
+  }
+  // if switch_3 is selected 
+  
+  if (PIN_SWITCH_1 < 1  and PIN_SWITCH_2 < 1 and PIN_SWITCH_3 < 1 and PIN_SWITCH_3 < 1){
+    thiredShape();
+  }
+  // if switch_4 is selected 
+  
+  if (PIN_SWITCH_1 < 1  and PIN_SWITCH_2 < 1 and PIN_SWITCH_3 < 1 and PIN_SWITCH_3 < 1){
+    normalOpen();
+  }
+  // TODO you loop code
+  // use the RemoteXY structure for data transfer
+  // do not call delay() 
+}
+//defulte function Normal Open
+void normalOpen(){
+  digitalWrite(motor1,HIGH);
+  digitalWrite(motor2,HIGH);
+  digitalWrite(motor3,HIGH);
+  digitalWrite(motor4,HIGH);
+  digitalWrite(motor5,HIGH);
+  digitalWrite(motor6,HIGH);
+  digitalWrite(motor7,HIGH);
+  digitalWrite(motor8,HIGH);  
+}
+// first shape
+void fristShape(){
+  digitalWrite(motor1,HIGH);
+  delay(2000);
+  digitalWrite(motor1,LOW);
+  digitalWrite(motor2,HIGH);
+  
+  delay(2000);
+  digitalWrite(motor2,LOW);
+  digitalWrite(motor1,LOW);
+  digitalWrite(motor3,HIGH);
+  delay(2000);
+  digitalWrite(motor2,LOW);
+  digitalWrite(motor1,LOW);
+  digitalWrite(motor3,LOW);
+  digitalWrite(motor4,HIGH);
+  delay(2000);
+  digitalWrite(motor2,LOW);
+  digitalWrite(motor1,LOW);
+  digitalWrite(motor3,LOW);
+  digitalWrite(motor4,LOW);
+  digitalWrite(motor5,HIGH);
+  
+  delay(2000);
+  digitalWrite(motor2,LOW);
+  digitalWrite(motor1,LOW);
+  digitalWrite(motor3,LOW);
+  digitalWrite(motor4,LOW);
+  digitalWrite(motor5,LOW);
+  digitalWrite(motor6,HIGH);
+  delay(2000);
+  digitalWrite(motor2,LOW);
+  digitalWrite(motor1,LOW);
+  digitalWrite(motor3,LOW);
+  digitalWrite(motor4,LOW);
+  digitalWrite(motor5,LOW);
+  digitalWrite(motor6,LOW);
+  digitalWrite(motor7,HIGH);
+  delay(2000);
+  digitalWrite(motor2,LOW);
+  digitalWrite(motor1,LOW);
+  digitalWrite(motor3,LOW);
+  digitalWrite(motor4,LOW);
+  digitalWrite(motor5,LOW);
+  digitalWrite(motor6,LOW);
+  digitalWrite(motor7,LOW);
+  digitalWrite(motor8,HIGH);
+  delay(2000);
+}
+void secondeShape(){
+  digitalWrite(motor1,HIGH);
+  delay(2000);
+  digitalWrite(motor2,HIGH);
+  delay(2000);
+  digitalWrite(motor3,HIGH);
+  delay(2000);
+  digitalWrite(motor4,HIGH);
+  delay(2000);
+  digitalWrite(motor5,HIGH);
+  delay(2000);
+  digitalWrite(motor6,HIGH);
+  delay(2000);
+  digitalWrite(motor7,HIGH);
+  delay(2000);
+  digitalWrite(motor8,HIGH);
+  delay(2000);
+  digitalWrite(motor2,LOW);
+  digitalWrite(motor1,LOW);
+  digitalWrite(motor3,LOW);
+  digitalWrite(motor4,LOW);
+  digitalWrite(motor5,LOW);
+  digitalWrite(motor6,LOW);
+  digitalWrite(motor7,LOW);
+  digitalWrite(motor8,LOW);
+  delay(2000);
+  digitalWrite(motor2,HIGH);
+  digitalWrite(motor1,HIGH);
+  digitalWrite(motor3,HIGH);
+  digitalWrite(motor4,HIGH);
+  digitalWrite(motor5,HIGH);
+  digitalWrite(motor6,HIGH);
+  digitalWrite(motor7,HIGH);
+  digitalWrite(motor8,HIGH);
+  delay(3000);
+}
+void thiredShape(){
+   digitalWrite(motor8,HIGH);
+   delay(2000);
+   digitalWrite(motor7,HIGH);
+   digitalWrite(motor6,HIGH);
+   digitalWrite(motor5,HIGH);
+   delay(10000);
+   digitalWrite(motor4,HIGH);
+   digitalWrite(motor3,HIGH);
+   digitalWrite(motor2,HIGH);
+   digitalWrite(motor1,HIGH);
+   delay(10000);
+}
